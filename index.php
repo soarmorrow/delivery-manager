@@ -281,6 +281,7 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder);
+date_default_timezone_set('Asia/Kolkata');
 
 /*
  * --------------------------------------------------------------------
@@ -289,4 +290,5 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
+require 'vendor/autoload.php';
 require_once BASEPATH.'core/CodeIgniter.php';

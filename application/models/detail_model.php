@@ -22,5 +22,17 @@ class Detail_model extends CI_Model{
 	public function get_details($id){
 		return $this->db->get_where($this->table,array('id'=>$id))->row();
 	}
+
+	public function update($data,$id){
+		return $this->db->update($this->table,$data,array('id' => $id));
+	}
+
+	public function get_All(){
+		return $this->db
+		            ->select('*')
+                    ->from($this->table)
+                    ->get()
+                    ->result();
+	}
 }
 ?>

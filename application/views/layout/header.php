@@ -51,6 +51,13 @@
 
                         <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                        <?php 
+                        if($this->session->userdata('is_admin')){
+                            ?>
+                            <li><a href="<?=site_url('admin/dashboard')?>"><i class="fa fa-dashboard"></i> Admin</a></li>
+                            <?php
+                        }
+                        ?>
                             <li><a href="<?=site_url('dashboard/profile')?>"><i class="fa fa-user"></i> Profile</a></li>
                             <li><a href="<?=site_url('auth/logout')?>"><i class="fa fa-sign-out"> </i> Logout</a></li>
                         </ul>

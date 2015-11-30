@@ -9,6 +9,7 @@ class Auth extends MY_Controller{
 			redirect('dashboard/index');
 		}
 		$this->load->model('user_model');
+		$this->load->model('user_role_model');
 	}
 
 
@@ -94,8 +95,15 @@ class Auth extends MY_Controller{
 				if($user){
 					$this->session->set_userdata('logged_in',true);
 					$this->session->set_userdata('user_id',$user->id);
+					$roles=$this->user_role_model->get_role_by_userid($user->id);
+					foreach ($roles as $role) {
+					    if($role->id ==1){
+					    	$this->session->set_userdata('is_admin',1);
+					    }
+					}
+					// var_dump($this->session->userdata('is_admin'));exit;
 					$this->session->set_flashdata('success','Hello '. $user->first_name);
-					redirect('dashboard/index');
+					redirect('dashboard');
 				}else{
 					$this->session->set_flashdata('error','Incorrect email or password');
 					redirect('auth/login');
