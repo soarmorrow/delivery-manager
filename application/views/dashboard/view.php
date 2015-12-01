@@ -47,7 +47,7 @@
 		     </tr>
 
 		     </table>
-		     <a href="<?= site_url('dashboard') ?>" class="btn btn-primary">Back</a>
+		     <a href="javascript:history.go(-1);" class="btn btn-primary">Back</a>
 			</div>
 		</div>
 		</div>

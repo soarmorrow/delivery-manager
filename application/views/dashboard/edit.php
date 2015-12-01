@@ -59,7 +59,7 @@
 
 				<div class="btn-group btn-block">
 				<button type="submit" class="btn btn-success "><i class="fa fa-save"></i> Edit</button>
-				<a href="<?= site_url('dashboard/index')?>" class="btn btn-primary"><i class="fa fa-times"></i> Cancel</a>
+				<a href="javascript:history.go(-1);" class="btn btn-primary"><i class="fa fa-times"></i> Cancel</a>
 				</div>
 			</form>
 			

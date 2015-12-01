@@ -34,5 +34,15 @@ class Detail_model extends CI_Model{
                     ->get()
                     ->result();
 	}
+
+	public function get_users(){
+		return $this->db
+		            ->select('u.first_name as created_by,d.*')
+		            ->from('details d')
+		            ->join('users u','u.id=d.user_id')
+		            ->order_by('d.created_at','desc')
+		            ->get()
+		            ->result();
+	}
 }
 ?>

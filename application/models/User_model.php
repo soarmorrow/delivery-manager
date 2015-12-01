@@ -61,5 +61,14 @@ class User_model extends CI_Model{
 		            ->row();
 	}
 
+	public function getAll(){
+		return $this->db
+		            ->select('*')
+		            ->from($this->table)
+		            ->get()
+		            ->result();
+
+	}
+
 }
 ?>

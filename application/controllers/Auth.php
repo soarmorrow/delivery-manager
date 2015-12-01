@@ -6,10 +6,10 @@ class Auth extends MY_Controller{
 
 		parent::__construct();
 		if($this->session->userdata('logged_in') && $this->uri->segment(2) !='logout'){
-			redirect('dashboard/index');
+			redirect('dashboard');
 		}
-		$this->load->model('user_model');
-		$this->load->model('user_role_model');
+		$this->load->model('User_model');
+		$this->load->model('User_role_model');
 	}
 
 
@@ -34,7 +34,7 @@ class Auth extends MY_Controller{
 					'email' =>$this->input->post('email'),
 					'password' =>md5($this->input->post('password')),
 					'activation_code'=>$activation_code);
-				if($this->user_model->insert($data)){
+				if($this->User_model->insert($data)){
 
              		//email 
 
@@ -58,7 +58,7 @@ class Auth extends MY_Controller{
 	}
 
 	public function verify_email($code){
-		$user=$this->user_model->get_user_by_code($code);
+		$user=$this->User_model->get_user_by_code($code);
 		if(empty($user)){
 			$this->session->set_flashdata('error','Invalid code');
 			redirect('auth/login');
@@ -68,7 +68,7 @@ class Auth extends MY_Controller{
 				'activated'=>1,
 				'activated_at'=>date('Y m d H:i s')
 				);
-			$this->user_model->update($data,$user->id);
+			$this->User_model->update($data,$user->id);
 			$this->session->set_flashdata('success','Email verified successfully');
 
 			$to=$user->email;
@@ -90,12 +90,12 @@ class Auth extends MY_Controller{
 			if($this->form_validation->run() == TRUE){
 				$email=$this->input->post('email');
 				$password=$this->input->post('password');
-				$user=$this->user_model->login($email,$password);
-				// debug($this->user_model->db->last_query());
+				$user=$this->User_model->login($email,$password);
+				// debug($this->User_model->db->last_query());
 				if($user){
 					$this->session->set_userdata('logged_in',true);
 					$this->session->set_userdata('user_id',$user->id);
-					$roles=$this->user_role_model->get_role_by_userid($user->id);
+					$roles=$this->User_role_model->get_role_by_userid($user->id);
 					foreach ($roles as $role) {
 					    if($role->id ==1){
 					    	$this->session->set_userdata('is_admin',1);
@@ -117,7 +117,7 @@ class Auth extends MY_Controller{
 		if($this->input->post()){
 			$this->form_validation->set_rules('email','Email','required|valid_email');
 			if($this->form_validation->run()==TRUE) {
-				$user=$this->user_model->get_user_by_email($this->input->post('email'));
+				$user=$this->User_model->get_user_by_email($this->input->post('email'));
 				if(empty($user)){
 					$this->session->set_flashdata('error','Not registered');
 					redirect_back();
@@ -128,7 +128,7 @@ class Auth extends MY_Controller{
 						$data=array(
 							        'password_reset_code' => $reset_code
 							        );
-						$this->user_model->update($data,$user->id);
+						$this->User_model->update($data,$user->id);
 						$to=$user->email;
 						$subject='Reset your password';
 						$message='Someone has requested to reset your password.If you made this change reset your password by clicking the link '.$reset_link;
@@ -149,7 +149,7 @@ class Auth extends MY_Controller{
 
 //reset password
 	public function password_reset($code){
-		$user=$this->user_model->get_user_by_resetcode($code);
+		$user=$this->User_model->get_user_by_resetcode($code);
     if(empty($user)){
     	$this->session->set_flashdata('error','Invalid code');
     	redirect('auth/login');
@@ -162,7 +162,7 @@ class Auth extends MY_Controller{
                              'password_reset_code'=>"",
                              'password'=>md5($this->input->post('password'))
                 	);
-             $this->user_model->update($data,$user->id);
+             $this->User_model->update($data,$user->id);
              $this->session->set_flashdata('success','Your password has been changed successfully');
              $to=$user->email;
              $subject='Reset password';

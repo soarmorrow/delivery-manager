@@ -97,15 +97,15 @@ class Dashboard extends CI_Controller{
 	public function delete($id){
 		$user_id=$this->session->userdata('user_id');
 		$details=$this->detail_model->get_details($id);
-
-		if($details->user_id != $user_id){
+		if(($details->user_id != $user_id ) && $this->session->userdata('is_admin') != 1 ){
 			$this->session->set_flashdata('error', 'You are not authorized to do this action');
 			redirect('dashboard');
 		}
+		
 		$this->detail_model->delete($id);
 		$this->session->set_flashdata('success',"Item <b><i>".$details->name.'</i></b> has been deleted');
 		redirect_back();
-
+    
 	}
 }
 ?>
