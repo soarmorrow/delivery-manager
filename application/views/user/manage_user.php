@@ -33,8 +33,8 @@
                         <td><?=$user->email?></td>
                         <td><?= Carbon\Carbon::createFromTimestamp(strtotime($user->created_at))->diffForHumans() ?></td>
                         <td>
-                            <a href="#" title="view"><i class="fa fa-eye"></i></a>
-                            <a href="#" title="edit"><i class="fa fa-edit"></i></a>
+                            <a href="<?= site_url('users/view/'.$user->id) ?>" title="view"><i class="fa fa-eye"></i></a>
+                            <a href="<?= site_url('users/edit/'.$user->id) ?>" title="edit"><i class="fa fa-edit"></i></a>
                             <a href="#" title="delete"><i class="fa fa-trash-o"></i></a>
                         </td>
 

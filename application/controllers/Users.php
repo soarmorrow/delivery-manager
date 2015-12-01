@@ -9,6 +9,8 @@ class Users extends MY_Controller{
 			redirect('auth/login');
 		}
 		$this->load->model('User_model');
+		// $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
+		
 		$this->load->model('Detail_model');
 	}
 
@@ -80,13 +82,38 @@ class Users extends MY_Controller{
 
 
 
-	public function edit($id){
-
-	}
+	
 
 	public function view($id){
 
+       $data['view_page']='user/view';
+       $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));;
+       $data['user_details']=$this->User_model->get_user_by_id($id);
+       $this->load->view('layout/template',$data);
      
+	}
+
+	public function edit($id){
+      if($this->input->post()){
+      	$this->form_validation->set_rules('first_name','First name','required|alpha');
+      	$this->form_validation->set_rules('last_name','Last name','required|alpha');
+      	$this->form_validation->set_rules('username','Username','required');
+      	$this->form_validation->set_rules('email','Email','required|valid_email');
+      	if($this->form_validation->run() == TRUE){
+      		$data=array(
+      			        'first_name' => $this->input->post('first_name'),
+      			        'last_name' => $this->input->post('last_name'),
+      			        'username' => $this->input->post('username'),
+      			        'email' => $this->input->post('email'));
+      		$this->User_model->update($data,$id);
+      		$this->session->set_flashdata('success','Updated user details');
+      		redirect('users');
+      	}
+      }
+      $data['user_details']=$this->User_model->get_user_by_id($id);
+      $data['view_page']='user/edit';
+      $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));;
+      $this->load->view('layout/template',$data);
 	}
 
 	public function delete($id){
