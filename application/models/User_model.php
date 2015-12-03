@@ -61,13 +61,20 @@ class User_model extends CI_Model{
 		            ->row();
 	}
 
-	public function getAll(){
+	public function getAll($limit=null,$offset=null){
+		if(!is_null($limit) && !is_null($offset)){
+			$this->db->limit($limit,$limit*$offset);
+		}
 		return $this->db
 		            ->select('*')
 		            ->from($this->table)
 		            ->get()
 		            ->result();
 
+	}
+
+	public function delete($user_id){
+		$this->db->delete($this->table,array('id' => $user_id));
 	}
 
 }

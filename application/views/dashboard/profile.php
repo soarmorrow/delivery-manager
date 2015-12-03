@@ -29,20 +29,20 @@
             
 			<form method="post" action="<?= current_url()?>">
 				<div class="form-group <?= (form_error('first_name')) ?'has-error' :''?>">
-                 <input type="text" name="first_name" class="form-control floating-label"  placeholder="First Name" value="<?=$user_details->first_name?>"/>
+                 <input type="text" name="first_name" class="form-control floating-label"  placeholder="First Name" value="<?=$user->first_name?>"/>
                  <small class="text-danger"><?=form_error('first_name')?></small>
 				</div>
 				<div class="form-group <?= (form_error('last_name')) ?'has-error' :''?>">
-                 <input type="text" name="last_name" class="form-control floating-label"  placeholder="Last Name" value="<?=$user_details->last_name?>"/>
+                 <input type="text" name="last_name" class="form-control floating-label"  placeholder="Last Name" value="<?=$user->last_name?>"/>
                  <small class="text-danger"><?=form_error('last_name')?></small>
 				</div>
                 <div class="form-group <?= (form_error('username')) ?'has-error' :''?>">
-                 <input type="text" name="username" class="form-control floating-label"  placeholder="Userame" value="<?=$user_details->username?>"/>
+                 <input type="text" name="username" class="form-control floating-label"  placeholder="Userame" value="<?=$user->username?>"/>
                  <small class="text-danger"><?=form_error('username')?></small>
 				</div>
 
 				<div class="form-group <?= (form_error('email')) ?'has-error' :''?>">
-                 <input type="text" name="email" class="form-control floating-label"  placeholder="Email Address" value="<?=$user_details->email?>"/>
+                 <input type="text" name="email" class="form-control floating-label"  placeholder="Email Address" value="<?=$user->email?>"/>
                  <small class="text-danger"><?=form_error('email')?></small>
 				</div>
 

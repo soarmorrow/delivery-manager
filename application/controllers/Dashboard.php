@@ -7,22 +7,60 @@ class Dashboard extends CI_Controller{
 			$this->session->set_flashdata('error','Please login to continue');
 			redirect('auth/login');
 		}
-		$this->load->model('user_model');
-		$this->load->model('detail_model');
+		$this->load->model('User_model');
+		$this->load->model('Detail_model');
 	}
 
 	public function index(){
+      
 		$data['view_page']='dashboard/index';
 		$user_id=$this->session->userdata('user_id');
-		$data['user']=$this->user_model->get_user_by_id($user_id);
-		$data['details']=$this->detail_model->get_details_by_id($user_id);
+		$data['user']=$this->User_model->get_user_by_id($user_id);
+
+		$total_rows =$this->Detail_model->get_paginate_count($user_id);
+
+		// Adding pagination
+		$this->load->library('pagination');
+
+		$config['base_url'] = site_url('dashboard/index'); //dashboard/index/2
+		$config['total_rows'] = $total_rows;
+		$config['per_page'] = 5;
+		$config['full_tag_open'] = "<ul class='pagination'>";
+		$config['full_tag_close'] ="</ul>";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
+		$config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
+		$config['next_tag_open'] = "<li>";
+		$config['next_tagl_close'] = "</li>";
+		$config['prev_tag_open'] = "<li>";
+		$config['prev_tagl_close'] = "</li>";
+		$config['first_tag_open'] = "<li>";
+		$config['first_tagl_close'] = "</li>";
+		$config['last_tag_open'] = "<li>";
+		$config['last_tagl_close'] = "</li>";
+		$config['enable_query_strings'] = true;
+		$config['reuse_query_string'] = true;
+		$config['uri_segment'] = 3;
+		$config['use_page_numbers'] = TRUE;
+		$config['num_links'] = 5;
+
+
+		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+
+		$this->pagination->initialize($config);
+
+		$data['pagination'] = $this->pagination->create_links();
+
+		$data['details'] = $this->Detail_model->paginate_details($user_id, $config['per_page'], $page - 1 );
+	
 		$this->load->view('layout/template',$data);
 	}
 
 	public function add(){
 		$data['view_page']='dashboard/add';
 		$user_id=$this->session->userdata('user_id');
-		$data['user']=$this->user_model->get_user_by_id($user_id);
+		$data['user']=$this->User_model->get_user_by_id($user_id);
 		if($this->input->post()){
 			$this->form_validation->set_rules('name','Name','required|alpha');
 			$this->form_validation->set_rules('email','email','required|valid_email');
@@ -43,7 +81,7 @@ class Dashboard extends CI_Controller{
 					'phone'=>$this->input->post('phone'),
 					'user_id'=>$user_id
 					);
-				$this->detail_model->insert($data);
+				$this->Detail_model->insert($data);
 				$this->session->set_flashdata('success','New details added');
 				redirect('dashboard');
 			} 
@@ -53,7 +91,7 @@ class Dashboard extends CI_Controller{
 
 	public function edit($id){
 		$user_id=$this->session->userdata('user_id');
-		$details=$this->detail_model->get_details($id);
+		$details=$this->Detail_model->get_details($id);
 		$data['details']=$details;
 
 		if($this->input->post()){
@@ -74,38 +112,68 @@ class Dashboard extends CI_Controller{
 					'website' => $this->input->post('website'),
 					'phone' => $this->input->post('phone'),
 					);
-				$this->detail_model->update($data,$id);
+				$this->Detail_model->update($data,$id);
 				$this->session->set_flashdata('success','Updated');
 				redirect('dashboard');
 			}
 		}
 
 		$data['view_page']='dashboard/edit';
-		$data['user']=$this->user_model->get_user_by_id($user_id);
+		$data['user']=$this->User_model->get_user_by_id($user_id);
 		$this->load->view('layout/template',$data);
 	}
 
 	public function view($id){
 		$user_id=$this->session->userdata('user_id');
-        $details=$this->detail_model->get_details($id);
-        $data['details']=$details;
+		$details=$this->Detail_model->get_details($id);
+		$data['details']=$details;
 		$data['view_page']='dashboard/view';
-		$data['user']=$this->user_model->get_user_by_id($user_id);
+		$data['user']=$this->User_model->get_user_by_id($user_id);
 		$this->load->view('layout/template',$data);
 	}
 
 	public function delete($id){
 		$user_id=$this->session->userdata('user_id');
-		$details=$this->detail_model->get_details($id);
+		$details=$this->Detail_model->get_details($id);
 		if(($details->user_id != $user_id ) && $this->session->userdata('is_admin') != 1 ){
 			$this->session->set_flashdata('error', 'You are not authorized to do this action');
 			redirect('dashboard');
 		}
 		
-		$this->detail_model->delete($id);
+		$this->Detail_model->delete($id);
 		$this->session->set_flashdata('success',"Item <b><i>".$details->name.'</i></b> has been deleted');
 		redirect_back();
-    
+
+	}
+
+	public function profile(){
+
+		$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
+		if($this->input->post()){
+
+			$this->form_validation->set_rules('first_name','First Name','required|alpha');
+			$this->form_validation->set_rules('last_name','Last Name','required|alpha');
+			$this->form_validation->set_rules('username','Username','required');
+			$this->form_validation->set_rules('email','Email','required|valid_email');
+			$this->form_validation->set_rules('password','Password','min_length[6]');
+			$this->form_validation->set_rules('conpassword','Confirm Password','matches[password]');
+			if($this->form_validation->run() == TRUE ){
+				$data=array(
+					'first_name' => $this->input->post('first_name'),
+					'last_name' => $this->input->post('last_name'),
+					'username' => $this->input->post('username'),
+					'email' => $this->input->post('email'),
+					'password' => md5($this->input->post('password')) 
+					);
+				$this->User_model->update($data,$user->id);
+				$this->session->set_flashdata('success','Profile has been updated successfully');
+				redirect('dashboard');
+			}
+		}
+		$data['view_page'] ='dashboard/profile';
+		
+		$data['user']=$user;
+		$this->load->view('layout/template',$data);
 	}
 }
 ?>

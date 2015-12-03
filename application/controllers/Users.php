@@ -8,6 +8,10 @@ class Users extends MY_Controller{
 			$this->session->set_flashdata('error','Please login to continue');
 			redirect('auth/login');
 		}
+		if($this->session->userdata('is_admin') !=1){
+			$this->session->set_flashdata('error','You are not authorised to do this action');
+			redirect('dashboard');
+		}
 		$this->load->model('User_model');
 		// $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 		
@@ -17,8 +21,39 @@ class Users extends MY_Controller{
 	public function index(){
 		$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 		$data['user']=$user;
-		$data['user_details']=$this->User_model->getAll();
-     $data['view_page']='user/manage_user';
+		// $data['user_details']=$this->User_model->getAll();
+		$total_rows=count($this->User_model->getAll());
+
+		$config['base_url'] = site_url('users/index'); //dashboard/index/2
+		$config['total_rows'] = $total_rows;
+		$config['per_page'] = 5;
+		$config['full_tag_open'] = "<ul class='pagination'>";
+		$config['full_tag_close'] ="</ul>";
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
+		$config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
+		$config['next_tag_open'] = "<li>";
+		$config['next_tagl_close'] = "</li>";
+		$config['prev_tag_open'] = "<li>";
+		$config['prev_tagl_close'] = "</li>";
+		$config['first_tag_open'] = "<li>";
+		$config['first_tagl_close'] = "</li>";
+		$config['last_tag_open'] = "<li>";
+		$config['last_tagl_close'] = "</li>";
+		$config['enable_query_strings'] = true;
+		$config['reuse_query_string'] = true;
+		$config['uri_segment'] = 3;
+		$config['use_page_numbers']=true;
+		// $config['num_links'] = 5;
+
+
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+		$page=($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+		$data['user_details']=$this->User_model->getAll($config['per_page'],$page-1);
+
+       $data['view_page']='user/manage_user';
 		$this->load->view('layout/template',$data);
      
 	}
@@ -99,12 +134,15 @@ class Users extends MY_Controller{
       	$this->form_validation->set_rules('last_name','Last name','required|alpha');
       	$this->form_validation->set_rules('username','Username','required');
       	$this->form_validation->set_rules('email','Email','required|valid_email');
+      	$this->form_validation->set_rules('password','Password','min_length[6]');
+      	$this->form_validation->set_rules('conpassword','Confirm password','matches[password]');
       	if($this->form_validation->run() == TRUE){
       		$data=array(
       			        'first_name' => $this->input->post('first_name'),
       			        'last_name' => $this->input->post('last_name'),
       			        'username' => $this->input->post('username'),
-      			        'email' => $this->input->post('email'));
+      			        'email' => $this->input->post('email'),
+      			        'password' => md5($this->input->post('password')));
       		$this->User_model->update($data,$id);
       		$this->session->set_flashdata('success','Updated user details');
       		redirect('users');
@@ -117,7 +155,10 @@ class Users extends MY_Controller{
 	}
 
 	public function delete($id){
-
+       $user=$this->User_model->get_user_by_id($id);
+       $this->User_model->delete($id);
+       $this->session->set_flashdata('success', "<strong>".$user->first_name. '</strong> has been deleted successfully.');
+       redirect_back();
 	}
 }
 ?>

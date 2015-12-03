@@ -55,6 +55,7 @@
                 </table>
 
                 <a href="<?=site_url('dashboard')?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Back</a>
+                 <?php echo $this->pagination->create_links(); ?>
                 
     <!--     </div>
     </div> -->

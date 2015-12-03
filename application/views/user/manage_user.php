@@ -35,7 +35,7 @@
                         <td>
                             <a href="<?= site_url('users/view/'.$user->id) ?>" title="view"><i class="fa fa-eye"></i></a>
                             <a href="<?= site_url('users/edit/'.$user->id) ?>" title="edit"><i class="fa fa-edit"></i></a>
-                            <a href="#" title="delete"><i class="fa fa-trash-o"></i></a>
+                            <a href="<?= site_url('users/delete/'.$user->id) ?>" title="delete"><i class="fa fa-trash-o"></i></a>
                         </td>
 
                     </tr>
@@ -43,7 +43,7 @@
                    }
                  ?>
                 </table>
-                
+                <?php echo $this->pagination->create_links();?>
     <!--     </div>
     </div> -->
 </div>
