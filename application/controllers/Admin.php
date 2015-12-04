@@ -8,14 +8,13 @@ class Admin extends CI_Controller{
 	}
 
 	public function dashboard(){
+        
+		$search=$this->input->get('search');
 
 		$data['view_page']='admin/dashboard';
 		$data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
-		// $data['details']=$this->Detail_model->get_users();
-		$total_rows=$this->Detail_model->get_users();
+		$total_rows=$this->Detail_model->get_users(null,null,$search);
        
-		
-		
 		$config['base_url'] = site_url('admin/dashboard'); //dashboard/index/2
 		$config['total_rows'] = count($total_rows);
 		$config['per_page'] = 5;
@@ -44,7 +43,7 @@ class Admin extends CI_Controller{
 
 		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
 
-		$data['details'] = $this->Detail_model->get_users($config['per_page'],$page - 1);
+		$data['details'] = $this->Detail_model->get_users($config['per_page'],$page - 1,$search);
 		
 
 		$this->load->view('layout/template',$data);

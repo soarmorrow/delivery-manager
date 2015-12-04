@@ -16,6 +16,7 @@
 
 
 .navbar .navbar-nav > li > a{
+	line-height: 3;
   padding-bottom: 5px;
   padding-top: 5px;
 }

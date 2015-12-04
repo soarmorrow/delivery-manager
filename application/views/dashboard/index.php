@@ -25,9 +25,9 @@
 <div class="container">
  <div class="row">
      <div class="col-md-6">
-     <form method="get" action="<?= current_url() ?>">
+     <form method="get" action="<?= site_url('dashboard') ?>">
          <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search for..." name="search">
+          <input type="text" class="form-control" value="<?=$this->input->get('search')?>" placeholder="Search for..." name="search">
           <span class="input-group-btn"><button class="btn btn-primary search btn-flat" type="submit"><i class="fa fa-search"></i></button></span>
       </div><!-- /input-group -->
       </form>

@@ -25,8 +25,8 @@
     <script src="<?= base_url('assets/js/script.js') ?>"></script>
     <style type="text/css">
 
-
-    </style>
+       
+</style>
 </head>
 <body>
 
@@ -41,47 +41,30 @@
 
             </div>
             <div class="navbar-collapse collapse navbar-inverse-collapse">
-             <ul class="nav navbar-nav">
 
-                 <?php
-                 if ($this->session->userdata('logged_in')) {
-                    ?>
-                    <li class="<?=($this->uri->segment(1) == 'dashboard')?'active':''?>"><a href="<?=site_url('/')?>"><i class="fa fa-dashboard"></i> Dashboard <span class="sr-only">(current)</span></a></li>
+                <ul class="nav navbar-nav navbar-right">
 
-                    <?php
-                    if ($this->session->userdata('is_admin')) {
+                    <li class="dropdown">
+                        <a href="#" data-target="#" class="dropdown-toggle"
+                        data-toggle="dropdown">
+                        <img src="<?=base_url('assets/images/user.png')?>" class=" profile img-responsive img-circle" >  <?=$user->first_name?>
+
+                        <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        <?php 
+                        if($this->session->userdata('is_admin')){
+                            ?>
+                            <li><a href="<?=site_url('admin/dashboard')?>"><i class="fa fa-dashboard"></i> Admin</a></li>
+                            <?php
+                        }
                         ?>
-                        <li class="<?=($this->uri->segment(1) == 'admin')?'active':''?>"><a href="<?=site_url('/admin/dashboard')?>"><i class="fa fa-gear"></i> Admin <span class="sr-only">(current)</span></a></li>
-                        
-                        <?php
-                    }
-                    ?>   
-                    <?php
-                }
-                ?>
+                            <li><a href="<?=site_url('dashboard/profile')?>"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><a href="<?=site_url('auth/logout')?>"><i class="fa fa-sign-out"> </i> Logout</a></li>
+                        </ul>
+                    </li>
 
 
-
-            </ul>
-
-
-            <ul class="nav navbar-nav navbar-right">
-
-                <li class="dropdown">
-                    <a href="#" data-target="#" class="dropdown-toggle"
-                    data-toggle="dropdown">
-                    <img src="<?=base_url('assets/images/user.png')?>" class=" profile img-responsive img-circle" >  <?=$user->first_name?>
-
-                    <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        
-                        <li><a href="<?=site_url('dashboard/profile')?>"><i class="fa fa-user"></i> Profile</a></li>
-                        <li><a href="<?=site_url('auth/logout')?>"><i class="fa fa-sign-out"> </i> Logout</a></li>
-                    </ul>
-                </li>
-
-
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
-</header>
+    </header>

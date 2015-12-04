@@ -3,7 +3,8 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	Hello <strong><?=$username?>,</strong>
+
+	Hello <strong><?= $username ?>,</strong>
 	<p>
 		An account has been created with this email on 'collection App'.Please verify
 		the link to confirm and activate your account.
@@ -13,6 +14,19 @@
 		If your button doesn'nt work copy and paste below link on your browser<br />
 		<a href="<?=$activation_link ?>"><?=$activation_link ?></a><br />
 		If you haven't requested for an account kindly discard this message.<br /><br /><br />
+
+		
+		<strong>Your login details</strong>
+		<table style="border-collapse:collapse;">
+			<tr>
+				<th style="padding:5px; border: 1px solid #aaa;">Username:</th>
+				<td style="padding:5px; border: 1px solid #aaa;"><?= $username ?></td>
+			</tr>
+			<tr>
+				<th style="padding:5px; border: 1px solid #aaa;">Password</th>
+				<td style="padding:5px; border: 1px solid #aaa;"><?= $password ?></td>
+			</tr>
+		</table><br />
 		Thank you<br />
 		Collection team
 	</p>

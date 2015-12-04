@@ -6,15 +6,43 @@
     td{
            text-align: left;
     }
+    .input-group .input-group-btn .btn.search{
+   border-radius: 0;
+   padding: 6px 9px;
+}
+.input-group{
+    position: relative;
+    top: 12px;
+}
+.input-group-btn {
+    font-size: 0;
+    position: absolute;
+    right: 27px;
+    top: 1px;
+    white-space: nowrap;
+}
 </style>
 <div class="container">
-    <a href="<?= site_url('users') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Manage users</a>
-    <!-- <a href="<?= site_url('dashboard/add')?>" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add address</a> -->
-    <br /><br /><br />
-    <!-- <div class="row">
-        <div class="col-md-offset-1 col-md-10" border="1">
- -->
-            <table class="table table-bordered table-hover" width="100%">
+<br />
+<!-- search -->
+  <div class="row">
+      <div class="col-md-6">
+       <a href="<?= site_url('users') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Manage users</a>
+   </div>
+   <div class="col-md-6">
+       <form method="get" action="<?= site_url('admin/dashboard') ?>">
+       <div class="input-group pull-right">
+           <input type="text" name="search" value="<?=$this->input->get('search')?>" class="form-control" placeholder="Search here..." />
+          <span class="input-group-btn"><button class="btn btn-primary search btn-flat" type="submit"><i class="fa fa-search"></i></button></span>
+      </div>
+      </form>
+       <div class="clearfix"></div>
+   </div>
+  </div>
+
+    
+    <br />
+           <table class="table table-bordered table-hover" width="100%">
 
                 <tr>
                     <th>Name</th>
@@ -54,7 +82,7 @@
                  ?>
                 </table>
 
-                <a href="<?=site_url('dashboard')?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Back</a>
+                <a href="<?=site_url('dashboard')?>" class="btn btn-primary pull-right"><i class="fa fa-chevron-left"></i> Back</a>
                  <?php echo $this->pagination->create_links(); ?>
                 
     <!--     </div>

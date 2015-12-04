@@ -12,12 +12,15 @@ class Dashboard extends CI_Controller{
 	}
 
 	public function index(){
-      
+
+		$search = $this->input->get('search');
+		
+
 		$data['view_page']='dashboard/index';
 		$user_id=$this->session->userdata('user_id');
 		$data['user']=$this->User_model->get_user_by_id($user_id);
 
-		$total_rows =$this->Detail_model->get_paginate_count($user_id);
+		$total_rows =$this->Detail_model->get_paginate_count($user_id, $search);
 
 		// Adding pagination
 		$this->load->library('pagination');
@@ -52,8 +55,8 @@ class Dashboard extends CI_Controller{
 
 		$data['pagination'] = $this->pagination->create_links();
 
-		$data['details'] = $this->Detail_model->paginate_details($user_id, $config['per_page'], $page - 1 );
-	
+		$data['details'] = $this->Detail_model->paginate_details($user_id, $search, $config['per_page'], $page - 1 );
+
 		$this->load->view('layout/template',$data);
 	}
 
@@ -146,34 +149,43 @@ class Dashboard extends CI_Controller{
 
 	}
 
-	public function profile(){
+	public function profile($mode = 'view'){
 
-		$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
-		if($this->input->post()){
+		if ($mode == 'edit') {
+			$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
+			if($this->input->post()){
 
-			$this->form_validation->set_rules('first_name','First Name','required|alpha');
-			$this->form_validation->set_rules('last_name','Last Name','required|alpha');
-			$this->form_validation->set_rules('username','Username','required');
-			$this->form_validation->set_rules('email','Email','required|valid_email');
-			$this->form_validation->set_rules('password','Password','min_length[6]');
-			$this->form_validation->set_rules('conpassword','Confirm Password','matches[password]');
-			if($this->form_validation->run() == TRUE ){
-				$data=array(
-					'first_name' => $this->input->post('first_name'),
-					'last_name' => $this->input->post('last_name'),
-					'username' => $this->input->post('username'),
-					'email' => $this->input->post('email'),
-					'password' => md5($this->input->post('password')) 
-					);
-				$this->User_model->update($data,$user->id);
-				$this->session->set_flashdata('success','Profile has been updated successfully');
-				redirect('dashboard');
+				$this->form_validation->set_rules('first_name','First Name','required|alpha');
+				$this->form_validation->set_rules('last_name','Last Name','required|alpha');
+				$this->form_validation->set_rules('username','Username','required');
+				$this->form_validation->set_rules('email','Email','required|valid_email');
+				$this->form_validation->set_rules('password','Password','min_length[6]');
+				$this->form_validation->set_rules('conpassword','Confirm Password','matches[password]');
+				if($this->form_validation->run() == TRUE ){
+					$data=array(
+						'first_name' => $this->input->post('first_name'),
+						'last_name' => $this->input->post('last_name'),
+						'username' => $this->input->post('username'),
+						'email' => $this->input->post('email'),
+						'password' => md5($this->input->post('password')) 
+						);
+					$this->User_model->update($data,$user->id);
+					$this->session->set_flashdata('success','Profile has been updated successfully');
+					redirect('dashboard');
+				}
 			}
+			$data['view_page'] ='dashboard/profile_edit';
+
+			$data['user']=$user;
+			$this->load->view('layout/template',$data);
+		}else{
+			$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
+			$data['view_page'] ='dashboard/profile';
+
+			$data['user']=$user;
+			$this->load->view('layout/template',$data);
 		}
-		$data['view_page'] ='dashboard/profile';
-		
-		$data['user']=$user;
-		$this->load->view('layout/template',$data);
 	}
+
 }
 ?>

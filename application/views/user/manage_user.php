@@ -6,14 +6,41 @@
     td{
            text-align: left;
     }
+
+     .input-group .input-group-btn .btn.search{
+   border-radius: 0;
+   padding: 6px 9px;
+}
+.input-group{
+    position: relative;
+    top: 12px;
+}
+.input-group-btn {
+    font-size: 0;
+    position: absolute;
+    right: 27px;
+    top: 1px;
+    white-space: nowrap;
+}
 </style>
 <div class="container">
-    <a href="<?= site_url('users/add') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Add user</a>
-       <br /><br /><br />
-       
-    <!-- <div class="row">
-        <div class="col-md-offset-1 col-md-10" border="1">
- -->
+   
+    <!-- search -->
+  <div class="row">
+      <div class="col-md-6">
+       <a href="<?= site_url('users/add') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Add user</a>
+   </div>
+   <div class="col-md-6">
+       <form method="get" action="<?= site_url('users') ?>">
+       <div class="input-group pull-right">
+           <input type="text" name="search" value="<?=$this->input->get('search')?>" class="form-control" placeholder="Search here..." />
+          <span class="input-group-btn"><button class="btn btn-primary search btn-flat" type="submit"><i class="fa fa-search"></i></button></span>
+      </div>
+      </form>
+       <div class="clearfix"></div>
+   </div>
+  </div>
+
             <table class="table table-bordered table-hover" width="100%">
 
                 <tr>
@@ -28,7 +55,7 @@
                     <?php
                    foreach ($user_details as $user) {
                  ?>
-                        <td><?=$user->first_name." ".$user->last_name?></td>
+                        <td><?=$user->name?></td>
                         <td><?=$user->username?></td>
                         <td><?=$user->email?></td>
                         <td><?= Carbon\Carbon::createFromTimestamp(strtotime($user->created_at))->diffForHumans() ?></td>

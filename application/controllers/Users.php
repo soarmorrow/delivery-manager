@@ -19,10 +19,12 @@ class Users extends MY_Controller{
 	}
 
 	public function index(){
+
+		$search=$this->input->get('search');
 		$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 		$data['user']=$user;
 		// $data['user_details']=$this->User_model->getAll();
-		$total_rows=count($this->User_model->getAll());
+		$total_rows=count($this->User_model->getAll($search));
 
 		$config['base_url'] = site_url('users/index'); //dashboard/index/2
 		$config['total_rows'] = $total_rows;
@@ -51,19 +53,19 @@ class Users extends MY_Controller{
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		$page=($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
-		$data['user_details']=$this->User_model->getAll($config['per_page'],$page-1);
-
+		$data['user_details']=$this->User_model->getAll($search,$config['per_page'],$page-1);
+// debug($this->User_model->db->last_query());
        $data['view_page']='user/manage_user';
 		$this->load->view('layout/template',$data);
      
 	}
 
 	public function add(){
-
-	
+		
 		$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 		$data['user']=$user;
 
+        
 		if($this->input->post()){
 
 
@@ -87,10 +89,12 @@ class Users extends MY_Controller{
 
              		//email
 					$username=$this->input->post('username');
+					$password=$this->input->post('password');
 					$activation_link=site_url('auth/verify_email/'.$activation_code); 
 					$content=array(
 						'activation_link' => $activation_link,
-						'username' => $username
+						'username' => $username,
+						'password' =>$password
 						);
 					
 					$to=$this->input->post('email');
@@ -113,7 +117,7 @@ class Users extends MY_Controller{
 
 		$data['view_page']='user/add_user';
 		$this->load->view('layout/template',$data);
-	}
+	 }
 
 
 
