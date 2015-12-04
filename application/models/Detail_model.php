@@ -56,10 +56,16 @@ class Detail_model extends CI_Model{
 			         ->or_like('d.website', $search)
 			         ->or_like('d.phone', $search)
 			         ->or_like('d.pin', $search)
-			         ->or_like('d.location', $search)
-			         ->or_like('u.first_name', $search)
-			         ->or_like('u.last_name', $search)
-			         ->group_end();
+			         ->or_like('d.location', $search);
+			         
+			         
+
+			         $exploded=explode(' ',$search);
+			         foreach ($exploded as $value) {
+			         	$this->db->or_like('u.first_name', $value)
+			                     ->or_like('u.last_name', $value);
+			            }
+			            $this->db->group_end();
 		}
 		return $this->db
 		->select('CONCAT(u.first_name," ", u.last_name ) as created_by,d.*')

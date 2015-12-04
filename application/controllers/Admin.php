@@ -44,7 +44,7 @@ class Admin extends CI_Controller{
 		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
 
 		$data['details'] = $this->Detail_model->get_users($config['per_page'],$page - 1,$search);
-		
+		// debug($this->User_model->db->last_query());
 
 		$this->load->view('layout/template',$data);
 

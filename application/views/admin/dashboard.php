@@ -25,10 +25,15 @@
 <div class="container">
 <br />
 <!-- search -->
+
+
+
+
   <div class="row">
       <div class="col-md-6">
        <a href="<?= site_url('users') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Manage users</a>
    </div>
+  
    <div class="col-md-6">
        <form method="get" action="<?= site_url('admin/dashboard') ?>">
        <div class="input-group pull-right">
