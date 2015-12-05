@@ -43,34 +43,38 @@ class Detail_model extends CI_Model{
 		->result();
 	}
 
-	public function get_users($limit=null, $offset=null,$search=null){
+	public function get_users($limit=null, $offset=null,$search=null,$select=null){
 		if(!is_null($limit) && !is_null($offset)){
 			$this->db->limit($limit, $limit*$offset);
 		}
 
 		if($search){
 			$this->db->group_start()
-			         ->like('d.name' ,$search)
-			         ->or_like('d.address', $search)
-			         ->or_like('d.email', $search)
-			         ->or_like('d.website', $search)
-			         ->or_like('d.phone', $search)
-			         ->or_like('d.pin', $search)
-			         ->or_like('d.location', $search);
-			         
-			         
+			->like('d.name' ,$search)
+			->or_like('d.address', $search)
+			->or_like('d.email', $search)
+			->or_like('d.website', $search)
+			->or_like('d.phone', $search)
+			->or_like('d.pin', $search)
+			->or_like('d.location', $search);
 
-			         $exploded=explode(' ',$search);
-			         foreach ($exploded as $value) {
-			         	$this->db->or_like('u.first_name', $value)
-			                     ->or_like('u.last_name', $value);
-			            }
-			            $this->db->group_end();
+
+
+			$exploded=explode(' ',$search);
+			foreach ($exploded as $value) {
+				$this->db->or_like('u.first_name', $value)
+				->or_like('u.last_name', $value);
+			}
+			$this->db->group_end();
+		}
+
+		if($select){
+			$this->db->where('d.user_id', $select);
 		}
 		return $this->db
 		->select('CONCAT(u.first_name," ", u.last_name ) as created_by,d.*')
 		->from('details d')
-		->join('users u','u.id=d.user_id')
+		->join('users u','u.id=d.user_id','left')
 		->order_by('d.created_at','desc')
 		->get()
 		->result();
@@ -130,7 +134,7 @@ class Detail_model extends CI_Model{
 		->row();
 
 		return $result->count;
-	
+
 	}
 }
 ?>

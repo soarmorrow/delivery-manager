@@ -12,7 +12,7 @@ class Users extends MY_Controller{
 			$this->session->set_flashdata('error','You are not authorised to do this action');
 			redirect('dashboard');
 		}
-		$this->load->model('User_model');
+		$this->load->model(array('User_model', 'User_role_model'));
 		// $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 		
 		$this->load->model('Detail_model');
@@ -54,10 +54,25 @@ class Users extends MY_Controller{
 		$this->pagination->initialize($config);
 		$page=($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
 		$data['user_details']=$this->User_model->getAll($search,$config['per_page'],$page-1);
-// debug($this->User_model->db->last_query());
-       $data['view_page']='user/manage_user';
+
+		foreach ($data['user_details'] as $k => $user) {
+			$roles = $this->User_role_model->get_role_by_userid($user->id);
+			$is_admin = false;
+
+			foreach ($roles as $role) {
+				if ($role->role_id == 1) {
+					$is_admin = true;
+					break;
+				}
+			}
+
+			$user->is_admin = $is_admin;
+			$data['user_details'][$k] = $user;
+		}
+
+		$data['view_page']='user/manage_user';
 		$this->load->view('layout/template',$data);
-     
+
 	}
 
 	public function add(){
@@ -65,7 +80,7 @@ class Users extends MY_Controller{
 		$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 		$data['user']=$user;
 
-        
+
 		if($this->input->post()){
 
 
@@ -117,7 +132,7 @@ class Users extends MY_Controller{
 
 		$data['view_page']='user/add_user';
 		$this->load->view('layout/template',$data);
-	 }
+	}
 
 
 
@@ -125,44 +140,48 @@ class Users extends MY_Controller{
 
 	public function view($id){
 
-       $data['view_page']='user/view';
-       $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));;
-       $data['user_details']=$this->User_model->get_user_by_id($id);
-       $this->load->view('layout/template',$data);
-     
+		$data['view_page']='user/view';
+		$data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));;
+		$data['user_details']=$this->User_model->get_user_by_id($id);
+		$this->load->view('layout/template',$data);
+
 	}
 
 	public function edit($id){
-      if($this->input->post()){
-      	$this->form_validation->set_rules('first_name','First name','required|alpha');
-      	$this->form_validation->set_rules('last_name','Last name','required|alpha');
-      	$this->form_validation->set_rules('username','Username','required');
-      	$this->form_validation->set_rules('email','Email','required|valid_email');
-      	$this->form_validation->set_rules('password','Password','min_length[6]');
-      	$this->form_validation->set_rules('conpassword','Confirm password','matches[password]');
-      	if($this->form_validation->run() == TRUE){
-      		$data=array(
-      			        'first_name' => $this->input->post('first_name'),
-      			        'last_name' => $this->input->post('last_name'),
-      			        'username' => $this->input->post('username'),
-      			        'email' => $this->input->post('email'),
-      			        'password' => md5($this->input->post('password')));
-      		$this->User_model->update($data,$id);
-      		$this->session->set_flashdata('success','Updated user details');
-      		redirect('users');
-      	}
-      }
-      $data['user_details']=$this->User_model->get_user_by_id($id);
-      $data['view_page']='user/edit';
-      $data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));;
-      $this->load->view('layout/template',$data);
+		if($this->input->post()){
+			$this->form_validation->set_rules('first_name','First name','required|alpha');
+			$this->form_validation->set_rules('last_name','Last name','required|alpha');
+			$this->form_validation->set_rules('username','Username','required');
+			$this->form_validation->set_rules('email','Email','required|valid_email');
+			$this->form_validation->set_rules('password','Password','min_length[6]');
+			$this->form_validation->set_rules('conpassword','Confirm password','matches[password]');
+			if($this->form_validation->run() == TRUE){
+				$data=array(
+					'first_name' => $this->input->post('first_name'),
+					'last_name' => $this->input->post('last_name'),
+					'username' => $this->input->post('username'),
+					'email' => $this->input->post('email'),
+					'password' => md5($this->input->post('password')));
+				$this->User_model->update($data,$id);
+				$this->session->set_flashdata('success','Updated user details');
+				redirect('users');
+			}
+		}
+		$data['user_details']=$this->User_model->get_user_by_id($id);
+		$data['view_page']='user/edit';
+		$data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));;
+		$this->load->view('layout/template',$data);
 	}
 
 	public function delete($id){
-       $user=$this->User_model->get_user_by_id($id);
-       $this->User_model->delete($id);
-       $this->session->set_flashdata('success', "<strong>".$user->first_name. '</strong> has been deleted successfully.');
-       redirect_back();
+		$user=$this->User_model->get_user_by_id($id);
+		if (!$user) {
+			$this->session->set_flashdata('error', 'Could not find user');
+			redirect_back();
+		}
+		$this->User_model->delete($id);
+		$this->session->set_flashdata('success', "<strong>".$user->first_name. '</strong> has been deleted successfully.');
+		redirect_back();
 	}
 }
 ?>
