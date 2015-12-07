@@ -27,7 +27,7 @@
             
             
             
-			<form method="post" action="<?= current_url()?>">
+			<form method="post" action="<?= current_url()?>" enctype="multipart/form-data">
 				<div class="form-group <?= (form_error('first_name')) ?'has-error' :''?>">
                  <input type="text" name="first_name" class="form-control floating-label"  placeholder="First Name" value="<?=$user->first_name?>"/>
                  <small class="text-danger"><?=form_error('first_name')?></small>
@@ -56,9 +56,17 @@
                  <small class="text-danger"><?=form_error('conpassword')?></small>
 				</div>
 				
+				<div class="form-group <?= (form_error('file')) ?'has-error' :''?>">
+
+                 <input type="file" name="file" class="file_input"  id="file_input"/>
+                 <small class="text-danger"><?php if(!empty($upload_error)) { 
+                    echo $upload_error;
+                 	} ?></small>
+				</div>
+				
 
 				<div class="btn-group btn-block">
-				<button type="submit" class="btn btn-success "><i class="fa fa-save"></i> Edit</button>
+				<button type="submit" class="btn btn-success "><i class="fa fa-save"></i> Update</button>
 				<a href="javascript:history.go(-1);" class="btn btn-primary"><i class="fa fa-times"></i> Cancel</a>
 				</div>
 			</form>
@@ -68,3 +76,18 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	$(document).ready(function(){
+		$("#file_input").fileinput({
+			'showUpload':false, 
+			'previewFileType':'any', 	
+			'browseLabel' : '',
+			'removeLabel' : '',
+			'browseIcon'  : '<i class="glyphicon glyphicon-picture"></i>'
+		});
+
+
+		$(document).find(".file-caption-name").text("Change your profile picture");
+	});
+</script>

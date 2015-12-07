@@ -169,9 +169,31 @@ class Dashboard extends CI_Controller{
 						'email' => $this->input->post('email'),
 						'password' => md5($this->input->post('password')) 
 						);
+     
+					if(isset($_FILES['file']['name'])){
+                        $path="uploads/profile_pic/".$user->id;
+						if(!file_exists($path)){
+							mkdir($path,0777,true);
+						}
+						$config['upload_path']=$path;
+						$config['allowed_types']='jpg|gif|png';
+						$this->load->library('upload',$config);
+						$this->data['upload_error']=null;
+						if($this->upload->do_upload('file')){
+                          $upload_data=$this->upload->data();
+
+                          $path=$path.'/'.$upload_data['file_name'];
+                          $data['profile_image'] =$path;
+						}else{
+							$this->data['upload_error'] =$this->upload->display_errors();
+						}
+					}
+					if(is_null($this->data['upload_error'])){
+
 					$this->User_model->update($data,$user->id);
 					$this->session->set_flashdata('success','Profile has been updated successfully');
 					redirect('dashboard');
+				}
 				}
 			}
 			$data['view_page'] ='dashboard/profile_edit';

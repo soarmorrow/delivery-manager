@@ -35,7 +35,7 @@
 
   <div class="row">
     <div class="col-md-4">
-     <a href="<?= site_url('users') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Manage users</a>
+     <!-- <a href="<?= site_url('users') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Manage users</a> -->
    </div>
    <div class="col-md-6 col-md-offset-2">
      <form method="get" action="<?= site_url('admin/dashboard') ?>">
