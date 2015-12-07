@@ -28,7 +28,7 @@ class Users extends MY_Controller{
 
 		$config['base_url'] = site_url('users/index'); //dashboard/index/2
 		$config['total_rows'] = $total_rows;
-		$config['per_page'] = 5;
+		$config['per_page'] = 10;
 		$config['full_tag_open'] = "<ul class='pagination'>";
 		$config['full_tag_close'] ="</ul>";
 		$config['num_tag_open'] = '<li>';
