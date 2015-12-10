@@ -34,12 +34,10 @@
 
 
   <div class="row">
-    <div class="col-md-4">
-     <!-- <a href="<?= site_url('users') ?>" class="btn btn-primary"><i class="fa fa-users"></i> Manage users</a> -->
-   </div>
-   <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 col-md-offset-2">
      <form method="get" action="<?= site_url('admin/dashboard') ?>">
-       <div class="form-group col-md-6 user_select">
+     <div class="form-group col-md-4 user_select">
          <select class="form-control" name="search_select">
            <option value=""> All users</option>
            <?php foreach ($user_details as $value) {
@@ -49,8 +47,16 @@
             <?php } ?>
           </select>
         </div>
-
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4 user_select">
+         <select class="form-control" name="search_status">
+           <option value=""> All Status</option>
+           <?php foreach ($order_status as $value) {
+            ?>
+            <option value="<?=$value->id?>" <?= ($this->input->get('search_status') == $value->id)?'selected':'' ?>> <?=$value->name?></option>
+            <?php } ?>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
           <!--  <form method="get" action="<?= site_url('admin/dashboard') ?>"> -->
           <div class="input-group pull-right">
            <input type="text" name="search" value="<?=$this->input->get('search')?>" class="form-control" placeholder="Search here..." />
@@ -85,17 +91,17 @@
            ?>
            <td><?=$details->name?></td>
            <td>
-             <?=nl2br($details->address)?><br />
+             <?=nl2br($details->address)?><br /><br />
              <?php
              if ($details->pin) {
-               echo "<strong>PIN :</strong> ".$details->pin."<br/>";
+               echo "PIN : ".$details->pin."<br/>";
 
              }
              if($details->email){
-              echo "<strong>Email :</strong> ".$details->email."<br />";
+              echo "Email : ".$details->email."<br />";
             }
             if($details->website){
-              echo "<strong>Website :</strong> ".$details->website;
+              echo "Website : ".$details->website;
             }
             ?>
 
