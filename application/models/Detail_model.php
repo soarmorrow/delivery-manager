@@ -72,9 +72,10 @@ class Detail_model extends CI_Model{
 			$this->db->where('d.user_id', $select);
 		}
 		return $this->db
-		->select('CONCAT(u.first_name," ", u.last_name ) as created_by,d.*')
+		->select('CONCAT(u.first_name," ", u.last_name ) as created_by,d.*, s.name as status, s.label')
 		->from('details d')
 		->join('users u','u.id=d.user_id','left')
+		->join('status s', 'd.status_id = s.id', 'left')
 		->order_by('d.created_at','desc')
 		->get()
 		->result();
@@ -105,21 +106,22 @@ class Detail_model extends CI_Model{
 	}
 
 	public function paginate_details($user_id, $search = null, $limit, $offset){
-		$this->db->select('*')
-		->from('details')
-		->where('user_id', $user_id);
+		$this->db->select('d.*,s.name as status, s.label')
+		         ->from('details d')
+		         ->join('status s','d.status_id=s.id','left')
+		         ->where('user_id', $user_id);
 
 
 		if ($search) {
 			$this->db->group_start();
-			$this->db->like('name', $search);
-			$this->db->or_like('address', $search);
-			$this->db->or_like('email', $search);
-			$this->db->or_like('website', $search);
-			$this->db->or_like('phone', $search);
-			$this->db->or_like('pin', $search);
-			$this->db->or_like('location', $search);
-			$this->db->group_end();
+			$this->db->like('d.name', $search);
+			$this->db->or_like('d.address', $search);
+			$this->db->or_like('d.email', $search);
+			$this->db->or_like('d.website', $search);
+			$this->db->or_like('d.phone', $search);
+			$this->db->or_like('d.pin', $search);
+			$this->db->or_like('d.location', $search);
+		    $this->db->group_end();
 		}
 
 		$this->db->order_by('created_at', 'desc');

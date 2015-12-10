@@ -65,11 +65,11 @@ class Dashboard extends CI_Controller{
 		$user_id=$this->session->userdata('user_id');
 		$data['user']=$this->User_model->get_user_by_id($user_id);
 		if($this->input->post()){
-			$this->form_validation->set_rules('name','Name','required|alpha');
-			$this->form_validation->set_rules('email','email','required|valid_email');
+			$this->form_validation->set_rules('name','Name','required|alpha_numeric_spaces');
+			$this->form_validation->set_rules('email','email','valid_email');
 			$this->form_validation->set_rules('address','Address','required');
 			$this->form_validation->set_rules('location','Location','required');
-			$this->form_validation->set_rules('pin','PIN','required|numeric');
+			$this->form_validation->set_rules('pin','PIN','numeric');
 			$this->form_validation->set_rules('website','Website','valid_url');
 			$this->form_validation->set_rules('phone','Phone number','required');
 

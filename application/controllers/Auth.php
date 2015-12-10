@@ -103,7 +103,8 @@ class Auth extends MY_Controller{
 					}
 					// var_dump($this->session->userdata('is_admin'));exit;
 					$this->session->set_flashdata('success','Hello '. $user->first_name);
-					redirect('dashboard');
+					($this->session->userdata('is_admin'))? redirect('admin/dashboard'):redirect('dashboard');;
+					
 				}else{
 					$this->session->set_flashdata('error','Incorrect email or password');
 					redirect('auth/login');

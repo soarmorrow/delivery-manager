@@ -24,3 +24,22 @@
   height:40px;
   width:30px;
 }
+.popover{
+   font-weight: bold;
+   text-align: center;
+}
+.popover-title{
+  background-color: #333333;
+    border-bottom: 2px solid #ebebeb;
+    border-radius: 5px 5px 0 0;
+    font-size: 14px;
+    margin: 0;
+    padding: 8px 14px;
+}
+.popover-content{
+background-color: #fff;
+
+}
+.btn.editable-cancel{
+	background-color:#DB173D; 
+}
