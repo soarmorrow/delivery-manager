@@ -91,17 +91,17 @@
            ?>
            <td><?=$details->name?></td>
            <td>
-             <?=nl2br($details->address)?><br />
+             <?=nl2br($details->address)?><br /><br />
              <?php
              if ($details->pin) {
-               echo "<strong>PIN :</strong> ".$details->pin."<br/>";
+               echo "PIN : ".$details->pin."<br/>";
 
              }
              if($details->email){
-              echo "<strong>Email :</strong> ".$details->email."<br />";
+              echo "Email : ".$details->email."<br />";
             }
             if($details->website){
-              echo "<strong>Website :</strong> ".$details->website;
+              echo "Website : ".$details->website;
             }
             ?>
 
