@@ -49,7 +49,7 @@ class Detail_model extends CI_Model{
 		->result();
 	}
 
-	public function get_users($limit=null, $offset=null,$search=null,$select=null){
+	public function get_users($limit=null, $offset=null,$search=null,$select=null,$order=null){
 		if(!is_null($limit) && !is_null($offset)){
 			$this->db->limit($limit, $limit*$offset);
 		}
@@ -76,6 +76,9 @@ class Detail_model extends CI_Model{
 
 		if($select){
 			$this->db->where('d.user_id', $select);
+		}
+		if($order){
+			$this->db->where('d.status_id', $order);
 		}
 		return $this->db
 		->select('CONCAT(u.first_name," ", u.last_name ) as created_by,d.*, s.name as status, s.label')

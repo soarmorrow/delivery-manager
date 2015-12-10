@@ -25,13 +25,15 @@ class Admin extends CI_Controller{
 		// if($this->input->get()){
 		// 	debug($this->input->get('search_select'));
 		// }
-
+        $order_status=$this->input->get('search_status');
 		$search=$this->input->get('search');
 		$select=$this->input->get('search_select');
 		$data['user_details']=$this->User_model->getAll(null);
 		$data['view_page']='admin/dashboard';
 		$data['user']=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
-		$total_rows=$this->Detail_model->get_users(null,null,$search,$select);
+		$data['order_status']=$this->Status_model->get_all();
+
+		$total_rows=$this->Detail_model->get_users(null,null,$search,$select,$order_status);
 
 		$config['base_url'] = site_url('admin/dashboard'); //dashboard/index/2
 		$config['total_rows'] = count($total_rows);
@@ -61,7 +63,7 @@ class Admin extends CI_Controller{
 
 		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
 
-		$data['details'] = $this->Detail_model->get_users($config['per_page'],$page - 1,$search,$select);
+		$data['details'] = $this->Detail_model->get_users($config['per_page'],$page - 1,$search,$select,$order_status);
 		//debug($this->User_model->db->last_query());
 
 		$this->load->view('layout/template',$data);

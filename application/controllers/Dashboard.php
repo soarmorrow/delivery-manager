@@ -155,10 +155,10 @@ class Dashboard extends CI_Controller{
 			$user=$this->User_model->get_user_by_id($this->session->userdata('user_id'));
 			if($this->input->post()){
 
-				$this->form_validation->set_rules('first_name','First Name','required|alpha');
+				$this->form_validation->set_rules('first_name','First Name','required|alpha_numeric_spaces');
 				$this->form_validation->set_rules('last_name','Last Name','required|alpha');
-				$this->form_validation->set_rules('username','Username','required');
-				$this->form_validation->set_rules('email','Email','required|valid_email');
+				$this->form_validation->set_rules('username','Username','required|is_unique[users.username]|alpha_numeric');
+				$this->form_validation->set_rules('email','Email','valid_email');
 				$this->form_validation->set_rules('password','Password','min_length[6]');
 				$this->form_validation->set_rules('conpassword','Confirm Password','matches[password]');
 				if($this->form_validation->run() == TRUE ){
