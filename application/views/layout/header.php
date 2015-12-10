@@ -26,7 +26,9 @@
     <script src="<?= base_url('assets/material/dist/js/material.min.js') ?>"></script>
     <script src="<?= base_url('assets/material/dist/js/ripples.min.js') ?>"></script>
     <script src="<?=base_url('assets/plugins/bootstrap-fileinput-master/js/fileinput.min.js')?>"></script>
+<!--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK3S08d1fhYGMpyylmwf_iwPNfjhkbyaU&libraries=places" async defer></script>-->
     <script src="<?= base_url('assets/js/script.js') ?>"></script>
+<!--    <script src="--><?//= base_url('assets/js/jquery.geocomplete.min.js') ?><!--"></script>-->
     <!-- X-editable -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 

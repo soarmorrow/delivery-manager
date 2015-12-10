@@ -74,6 +74,7 @@ class Dashboard extends CI_Controller{
 			$this->form_validation->set_rules('phone','Phone number','required');
 
 			if($this->form_validation->run() == TRUE){
+                debug($this->input->post());
 				$data=array(
 					'name'=>$this->input->post('name'),
 					'email'=>$this->input->post('email'),
@@ -81,6 +82,9 @@ class Dashboard extends CI_Controller{
 					'location'=>$this->input->post('location'),
 					'pin'=>$this->input->post('pin'),
 					'website'=>$this->input->post('website'),
+                    'latitude' => $this->input->post('latitude'),
+                    'longitude' => $this->input->post('longitude'),
+                    'google_place_id' => $this->input->post('google_place_id'),
 					'phone'=>$this->input->post('phone'),
 					'user_id'=>$user_id
 					);
@@ -106,16 +110,7 @@ class Dashboard extends CI_Controller{
 			$this->form_validation->set_rules('website','Website','valid_url');
 			$this->form_validation->set_rules('phone','Phone number','required');
 			if($this->form_validation->run() ==TRUE){
-				$data=array(
-					'name' => $this->input->post('name'),
-					'email' => $this->input->post('email'),
-					'address' => $this->input->post('address'),
-					'location' => $this->input->post('location'),
-					'pin' => $this->input->post('pin'),
-					'website' => $this->input->post('website'),
-					'phone' => $this->input->post('phone'),
-					);
-				$this->Detail_model->update($data,$id);
+				$this->Detail_model->update($this->input->post(),$id);
 				$this->session->set_flashdata('success','Updated');
 				redirect('dashboard');
 			}

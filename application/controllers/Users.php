@@ -98,6 +98,10 @@ class Users extends MY_Controller{
 					'last_name' =>$this->input->post('last_name'),
 					'username' =>$this->input->post('username'),
 					'email' =>$this->input->post('email'),
+                    'formatted_address' => $this->input->post('location'),
+                    'latitude' => $this->input->post('latitude'),
+                    'longitude' => $this->input->post('longitude'),
+                    'google_place_id' => $this->input->post('google_place_id'),
 					'password' =>md5($this->input->post('password')),
 					'activation_code'=>"",
 					'activated' => 1,
@@ -129,7 +133,7 @@ class Users extends MY_Controller{
 			}
 		}
 
-		$data['view_page']='user/add_user';
+		$data['view_page']='user/add';
 		$this->load->view('layout/template',$data);
 		
 	}
@@ -151,17 +155,21 @@ class Users extends MY_Controller{
 		if($this->input->post()){
 			$this->form_validation->set_rules('first_name','First name','required|alpha_numeric_spaces');
 			$this->form_validation->set_rules('last_name','Last name','required|alpha');
-			$this->form_validation->set_rules('username','Username','required|is_unique[users.username]|alpha_numeric');
 			$this->form_validation->set_rules('email','Email','valid_email');
+			$this->form_validation->set_rules('location','Location','required');
 			$this->form_validation->set_rules('password','Password','min_length[6]');
 			$this->form_validation->set_rules('conpassword','Confirm password','matches[password]');
 			if($this->form_validation->run() == TRUE){
 				$data=array(
 					'first_name' => $this->input->post('first_name'),
 					'last_name' => $this->input->post('last_name'),
-					'username' => $this->input->post('username'),
 					'email' => $this->input->post('email'),
-					'password' => md5($this->input->post('password')));
+					'formatted_address' => $this->input->post('location'),
+					'latitude' => $this->input->post('latitude'),
+					'longitude' => $this->input->post('longitude'),
+					'google_place_id' => $this->input->post('google_place_id'),
+					'password' => md5($this->input->post('password'))
+                );
 				$this->User_model->update($data,$id);
 				$this->session->set_flashdata('success','Updated user details');
 				redirect('users');
