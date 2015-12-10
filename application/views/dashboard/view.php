@@ -23,20 +23,30 @@
 		     <table class="table table-bordered" width="100%">
 		     <tr>
 		     	<th>Address</th>
-		     	<td><?= $details->address ?></td>
+		     	<td><?= nl2br($details->address) ?><br />
+                <?php
+                 if($details->pin){
+                   echo	"PIN: ".$details->pin."<br />";
+                 }
+                 if($details->email){
+                   echo	"Email: ".$details->email ."<br />";
+                 }
+                  if($details->website){
+                   echo	"Website: ".$details->website;
+                 }
+
+                ?>
+		     	</td>
 		     </tr>
 		      <tr>
 		     	<th>location</th>
 		     	<td><?= $details->location ?></td>
 		     </tr>
 		      <tr>
-		     	<th>PIN</th>
-		     	<td><?= $details->pin ?></td>
-		     </tr>
-		      <tr>
-		     	<th>Email</th>
-		     	<td><?= $details->email ?></td>
-		     </tr>
+		      	<th>Order Status</th>
+		      	<td><span class="label label-<?=$details->label?>"><?= $details->status ?></span></td>
+		      </tr>
+		      
 		      <tr>
 		     	<th>Phone</th>
 		     	<td><?= $details->phone ?></td>

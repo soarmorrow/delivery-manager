@@ -98,11 +98,11 @@ class Dashboard extends CI_Controller{
 		$data['details']=$details;
 
 		if($this->input->post()){
-			$this->form_validation->set_rules('name','Name','required|alpha');
-			$this->form_validation->set_rules('email','Email','required|valid_email');
+			$this->form_validation->set_rules('name','Name','required|alpha_numeric_spaces');
+			$this->form_validation->set_rules('email','Email','valid_email');
 			$this->form_validation->set_rules('address','Address','required');
 			$this->form_validation->set_rules('location','Location','required');
-			$this->form_validation->set_rules('pin','PIN','required|numeric');
+			$this->form_validation->set_rules('pin','PIN','numeric');
 			$this->form_validation->set_rules('website','Website','valid_url');
 			$this->form_validation->set_rules('phone','Phone number','required');
 			if($this->form_validation->run() ==TRUE){

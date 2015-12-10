@@ -36,15 +36,10 @@ class User_model extends CI_Model{
 		return $this->db
 		->select('*')
 		->from($this->table)
-		->group_start()
-		->where('email', $email)
-		->or_where('username', $email)
-		->group_end()
+		->where('username', $email)
 		->where('password', md5($password))
 		->get()
 		->row();
-
-					// SELECT * FROM users WHERE (email = 'parameter1' OR  username = 'parameter1') AND password = 'parameter2';
 	}
 
 	//get user details using email

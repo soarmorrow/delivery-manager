@@ -1,17 +1,16 @@
 <style type="text/css">
-     .btn-group .btn {
-            width: 50%;
-        }
+   .btn-group .btn {
+    width: 50%;
+}
 .panel{
     text-align: center;
-    text-transform: uppercase;
     color:;
 }
-    
-    
+
+
 </style>
 <body>
-<br /><br />
+    <br /><br />
     <div class="container">
         <div class="row centered-form">
             <div class="col-xs-12 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
@@ -61,11 +60,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                            <div class="btn-group btn-block">
-                            <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Create</button>
-                            <a href="javascript:history.go(-1)" class="btn btn-primary"><i class="fa fa-times"></i> cancel</a>
-                             </div>
-                             </div>
+                                <div class="btn-group btn-block">
+                                    <button type="submit" class="btn btn-info"><i class="fa fa-save"></i> Create</button>
+                                    <a href="javascript:history.go(-1)" class="btn btn-primary"><i class="fa fa-times"></i> cancel</a>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

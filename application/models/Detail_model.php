@@ -20,7 +20,13 @@ class Detail_model extends CI_Model{
 	}
 
 	public function get_details($id){
-		return $this->db->get_where($this->table,array('id'=>$id))->row();
+		return $this->db->select('d.*,s.name as status, s.label')
+		         ->from('details d')
+		         ->join('status s','d.status_id=s.id','left')
+		         ->where('d.id', $id)
+		         ->get()
+		         ->row();
+
 	}
 
 	public function update($data,$id){

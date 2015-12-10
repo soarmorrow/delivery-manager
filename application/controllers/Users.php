@@ -84,11 +84,11 @@ class Users extends MY_Controller{
 		if($this->input->post()){
 
 
-			$this->form_validation->set_rules('first_name','First name','required|alpha');
-			$this->form_validation->set_rules('last_name','Last name','required|alpha');
-			$this->form_validation->set_rules('username','User name','required|alpha_numeric_spaces');
-			$this->form_validation->set_rules('email','Email','required|valid_email|is_unique[users.email]');
-			$this->form_validation->set_rules('password','password','required|min_length[3]');
+			$this->form_validation->set_rules('first_name','First name','required|alpha_numeric_spaces');
+			$this->form_validation->set_rules('last_name','Last name','required|alpha_numeric_spaces');
+			$this->form_validation->set_rules('username','User name','required|is_unique[users.username]|alpha_numeric');
+			$this->form_validation->set_rules('email','Email','valid_email');
+			$this->form_validation->set_rules('password','password','required|min_length[6]');
 			$this->form_validation->set_rules('password_confirmation','Password confirmation','required|matches[password]');
 
 			if($this->form_validation->run()==TRUE){
@@ -99,7 +99,10 @@ class Users extends MY_Controller{
 					'username' =>$this->input->post('username'),
 					'email' =>$this->input->post('email'),
 					'password' =>md5($this->input->post('password')),
-					'activation_code'=>$activation_code);
+					'activation_code'=>"",
+					'activated' => 1,
+					'activated_at' => date('Y-m-d H:i:s')
+					);
 				if($this->User_model->insert($data)){
 
              		//email
@@ -107,36 +110,33 @@ class Users extends MY_Controller{
 					$password=$this->input->post('password');
 					$activation_link=site_url('auth/verify_email/'.$activation_code); 
 					$content=array(
-						'activation_link' => $activation_link,
 						'username' => $username,
 						'password' =>$password
 						);
-					
-					$to=$this->input->post('email');
-					$subject='Your Account has been created successfully';
-					$message=$this->load->view('emails/email',$content,true);
-
-					// $message='Verify your email by clicking the link '.$activation_link;
-					if($this->send_mail($to,$subject,$message)){
-						$this->session->set_flashdata('success','Account has been created successfully');
-						redirect('users');
-
+					if ($this->input->post('email')) {
+						$to=$this->input->post('email');
+						$subject='Your Account has been created successfully';
+						$message=$this->load->view('emails/email',$content,true);
+						$this->send_mail($to,$subject,$message);
 					}
-				}else{
-					$this->session->set_flashdata('error','Failed to create account');
-					redirect('users');
-				}
-			}
+					
 
+					$this->session->set_flashdata('success','Account has been created successfully');
+					redirect('users');
+
+				}
+
+			}
 		}
 
 		$data['view_page']='user/add_user';
 		$this->load->view('layout/template',$data);
+		
 	}
 
 
 
-	
+
 
 	public function view($id){
 
@@ -149,10 +149,10 @@ class Users extends MY_Controller{
 
 	public function edit($id){
 		if($this->input->post()){
-			$this->form_validation->set_rules('first_name','First name','required|alpha');
+			$this->form_validation->set_rules('first_name','First name','required|alpha_numeric_spaces');
 			$this->form_validation->set_rules('last_name','Last name','required|alpha');
-			$this->form_validation->set_rules('username','Username','required');
-			$this->form_validation->set_rules('email','Email','required|valid_email');
+			$this->form_validation->set_rules('username','Username','required|is_unique[users.username]|alpha_numeric');
+			$this->form_validation->set_rules('email','Email','valid_email');
 			$this->form_validation->set_rules('password','Password','min_length[6]');
 			$this->form_validation->set_rules('conpassword','Confirm password','matches[password]');
 			if($this->form_validation->run() == TRUE){
