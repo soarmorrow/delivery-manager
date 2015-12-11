@@ -119,7 +119,7 @@
           <td>
             <a href="<?= site_url('dashboard/view/'.$details->id) ?>" title="view"><i class="fa fa-eye"></i></a>
             <a href="<?= site_url('dashboard/edit/'.$details->id) ?>" title="edit"><i class="fa fa-edit"></i></a>
-            <a href="<?= site_url('dashboard/delete/'.$details->id) ?>" title="delete"><i class="fa fa-trash-o"></i></a>
+            <a href="<?= site_url('dashboard/delete/'.$details->id) ?>" title="delete" onclick="return confirm('Are you sure you want to delete this item?')"><i class="fa fa-trash-o"></i></a>
           </td>
 
         </tr>

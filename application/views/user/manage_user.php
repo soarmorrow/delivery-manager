@@ -69,7 +69,7 @@
         <?php
       }else{
         ?>
-        <a class="text-danger" href="<?= site_url('users/delete/'.$user->id) ?>" title="delete"><i class="fa fa-trash-o"></i></a>
+        <a class="text-danger" href="<?= site_url('users/delete/'.$user->id) ?>" title="delete" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash-o"></i></a>
         <?php
       }
       ?>
