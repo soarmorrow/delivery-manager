@@ -37,7 +37,7 @@
                  <small class="text-danger"><?=form_error('last_name')?></small>
 				</div>
                 <div class="form-group <?= (form_error('username')) ?'has-error' :''?>">
-                 <input type="text" name="username" class="form-control floating-label"  placeholder="Userame" value="<?=$user->username?>"/>
+                 <input readonly type="text" name="username" class="form-control floating-label"  placeholder="Userame" value="<?=$user->username?>"/>
                  <small class="text-danger"><?=form_error('username')?></small>
 				</div>
 
