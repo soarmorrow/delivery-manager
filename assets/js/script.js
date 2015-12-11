@@ -25,4 +25,8 @@
     $(".navbar .navbar-toggle").click(function(){
         $(".collapse").slideToggle();
     });
+
+    //alert
+
+    $(".alert").delay(5000).slideUp("slow");
 });
