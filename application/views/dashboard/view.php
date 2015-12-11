@@ -20,7 +20,7 @@
 	<div class="row">
         <div class="col-sm-6 col-md-6">
             <div class="card nopadding">
-                <iframe width="100%" height="500" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/directions?origin=place_id:<?=$details->origin_place_id?>&destination=<?=urlencode($details->location)?>&key=AIzaSyAuRIVUiffYowlTZx-iOTdmP0nfcFj9_go" allowfullscreen></iframe>
+                <iframe width="100%" height="500" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/directions?origin=place_id:<?=$details->origin_place_id?>&destination=<?=urlencode($details->location)?>&key=AIzaSyDHWvuZNsivQxVfbEMS6eilYwqPwlpuJQA" allowfullscreen></iframe>
             </div>
         </div>
         <div class="col-sm-6 col-md-6" >

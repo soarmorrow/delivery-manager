@@ -125,7 +125,7 @@
 </div>
 
 <script
-    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAK3S08d1fhYGMpyylmwf_iwPNfjhkbyaU&amp;libraries=places"></script>
+    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDHWvuZNsivQxVfbEMS6eilYwqPwlpuJQA&amp;libraries=places"></script>
 <script src="<?= base_url('assets/js/jquery.geocomplete.min.js') ?>"></script>
 <script type="text/javascript">
     var geocoder = new google.maps.Geocoder();
