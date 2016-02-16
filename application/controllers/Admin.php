@@ -22,9 +22,6 @@ class Admin extends CI_Controller{
 	}
 
 	public function dashboard(){
-		// if($this->input->get()){
-		// 	debug($this->input->get('search_select'));
-		// }
         $order_status=$this->input->get('search_status');
 		$search=$this->input->get('search');
 		$select=$this->input->get('search_select');
@@ -64,7 +61,6 @@ class Admin extends CI_Controller{
 		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
 
 		$data['details'] = $this->Detail_model->get_users($config['per_page'],$page - 1,$search,$select,$order_status);
-		//debug($this->User_model->db->last_query());
 
 		$this->load->view('layout/template',$data);
 
