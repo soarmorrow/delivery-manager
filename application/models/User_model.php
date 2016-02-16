@@ -36,15 +36,10 @@ class User_model extends CI_Model{
 		return $this->db
 		->select('*')
 		->from($this->table)
-		->group_start()
-		->where('email', $email)
-		->or_where('username', $email)
-		->group_end()
+		->where('username', $email)
 		->where('password', md5($password))
 		->get()
 		->row();
-
-					// SELECT * FROM users WHERE (email = 'parameter1' OR  username = 'parameter1') AND password = 'parameter2';
 	}
 
 	//get user details using email
@@ -81,11 +76,18 @@ class User_model extends CI_Model{
 
 			$this->db->group_end();
 		}
-		return $this->db
-		->select('CONCAT(first_name," ",last_name ) as name,id,username,email,created_at')
+		$users = $this->db
+		->select('first_name, last_name,id,username,email,created_at')
 		->from($this->table)
 		->get()
 		->result();
+
+        foreach ($users as $k => $user) {
+            $user->name = $user->first_name.' '.$user->last_name;
+            $details[$k] = $user;
+        }
+
+        return $users;
 
 	}
 

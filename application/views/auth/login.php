@@ -45,7 +45,7 @@
             <p id="profile-name" class="profile-name-card"></p>
             <form  method="post" action=<?=current_url()?>>
                 <div class="form-group <?=(form_error('email')) ? 'has-error' :''?>">
-                <input type="text"  class="form-control floating-label" name="email" placeholder="Email address or username" >
+                <input type="text"  class="form-control floating-label" name="email" placeholder="Username" >
                 <small class="text-danger"><?= form_error('email')?></small>
                 </div>
                 <div class="form-group <?= (form_error('password')) ? 'has-error' : ''?>">
